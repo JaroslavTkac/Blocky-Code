@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>StickJS</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+
+    <!-- JavaScript Includes -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="assets/js/jquery.knob.js"></script>
+
+    <!-- jQuery File Upload Dependencies -->
+    <script src="assets/js/jquery.ui.widget.js"></script>
+    <script src="assets/js/jquery.iframe-transport.js"></script>
+    <script src="assets/js/jquery.fileupload.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.js"></script>
+
+
+
+   
+
+</head>
+<body>
+    <!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+    <nav class="navbar navbar-default navbar-static-top" data-spy="affix" data-offset-top="120" style="margin-bottom: 0">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <!-- Button that toggles the navbar on and off on small screens -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <!-- Draws 3 bars in navbar button when in small mode -->
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+                <a class="pull-left" href="../index.html"><img style="height: 50px" src="assets/img/design/StickJSlogo.png"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <!--class="active"-->
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../#creator-info">About</a></li>
+                        <li><a href="#">How To</a></li>
+                    </ul>
+                    <form class="navbar-right my">
+                        <a href="#" class=""></a>
+                    </form>
+                </div>
+        </div>
+    </nav>
+
+
+     <!-- How to modal -->
+     <div class="modal fade" id="how-to-modal" role="dialog" data-keyboard="false">
+         <div class="modal-dialog" >
+             <div class="modal-content" >
+                 <div align="center" class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title" style="alignment: center">How to use StickJS</h4>
+                 </div>
+                 <div class="modal-body" >
+                     <h2 align="center">Upload</h2>
+                     <hr class="update-hr">
+                     <p>By clicking upload button, you can upload these types of files to server.</p>
+                     <ul>
+                         <li>mp3</li>
+                         <li>obj</li>
+                         <li>png</li>
+                         <li>jpg</li>
+                     </ul>
+                     <p><i>StickJS only supports .obj files, that are UV unwrapped (have texture coordinates).</i></p>
+                     <h2 align="center">Editor</h2>
+                     <hr class="update-hr">
+                     <p>There you can modify shapes and save them for following exporting to main scene.</p>
+                     <p><i>Color, Texture, Opacity and Shape rotation directly have effect on shape before saving. However by clicking on tab Lightning
+                         you only affecting shapes that are in editor window.</i></p>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+    <div class="container-fluid" style="background: #e3eef4">
+        <div class="row">
+            <!-- Main Scene & Importer -->
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="padding: 0 0 0 0">
+                <!-- WEB GL Canvas area -->
+                <canvas id="Scene" style="border: 3pt black solid"></canvas>
+
+                <!-- Add shape name modal -->
+                <div class="modal fade" id="add-name-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" >
+                        <div class="modal-content" >
+                            <div align="center" class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" style="alignment: center">Enter Object Name</h4>
+                            </div>
+                            <div align="center" class="modal-body" >
+                                <form>
+                                    <div id="add-shape-name-form" class="form-group ">
+                                        <label for="usr-shape-name">Name</label>
+                                        <input type="text" class="form-control" id="usr-shape-name">
+                                        <p id="error-explanation"></p>
+                                    </div>
+                                    <button class="btn btn-primary" id="add-shape-name">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload and selection navigation bar -->
+                <div >
+                    <nav class="navbar navbar-default navbar-static-top" style="margin: 0 0 0 0;">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#"><img style="margin-top: -28%; height: 50px" src="assets/img/design/SelectIcon.png"></a>
+                            </div>
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Select<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="select-dropdown-value">
+                                            <li><a href="#">Shapes</a></li>
+                                            <li><a href="#">Music</a></li>
+                                            <li><a href="#">Textures</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="navbar-right">
+                                    <form id="upload" method="post" action="upload.php" style="padding-top: 10%" >
+                                        <label class="btn btn-primary"><span class="glyphicon glyphicon-save-file"></span> Upload
+                                            <input type="file" name="upl" accept="image/png/jpg/obj/mp3" style="display: none;">
+                                        </label>
+                                    </form>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <div id="selectable-shapes">
+                        <div class="row" id="selectable-shapes-row">
+                            <div class="col-lg3 col-md-4 col-sm-4 col-xs-6" align="center">
+                                <a href="#" class="thumbnail">
+                                    <canvas class="preview-scene shape" id="shapes/cube.json" ></canvas>
+                                    <a href="#" class="btn btn-md overlay-btn disabled"><span class="glyphicon glyphicon-trash"></span></a>
+                                </a>
+                            </div>
+                            <div class="col-lg3 col-md-4 col-sm-4 col-xs-6" align="center">
+                                <a href="#" class="thumbnail">
+                                    <canvas class="preview-scene shape" id="shapes/sphere.json" ></canvas>
+                                    <a href="#" class="btn btn-md overlay-btn disabled"><span class="glyphicon glyphicon-trash"></span></a>
+                                </a>
+                            </div>
+                            <div class="col-lg3 col-md-4 col-sm-4 col-xs-6" align="center">
+                                <a href="#" class="thumbnail">
+                                    <canvas class="preview-scene shape" id="shapes/cone.json" ></canvas>
+                                    <a href="#" class="btn btn-md overlay-btn disabled"><span class="glyphicon glyphicon-trash"></span></a>
+                                </a>
+                            </div>
+                            <div class="col-lg3 col-md-4 col-sm-4 col-xs-6" align="center">
+                                <a href="#" class="thumbnail">
+                                    <canvas class="preview-scene shape" id="shapes/cylinder.json" ></canvas>
+                                    <a href="#" class="btn btn-md overlay-btn disabled"><span class="glyphicon glyphicon-trash"></span></a>
+                                </a>
+                            </div>
+                            <div class="col-lg3 col-md-4 col-sm-4 col-xs-6" align="center">
+                                <a href="#" class="thumbnail">
+                                    <canvas class="preview-scene shape" id="shapes/simpleSphere.json" ></canvas>
+                                    <a href="#" class="btn btn-md overlay-btn disabled"><span class="glyphicon glyphicon-trash"></span></a>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="selectable-music" style="display: none;">
+                        <div class="row" id="selectable-music-row">
+
+                        </div>
+                    </div>
+
+                    <div id="selectable-textures" style="display: none;">
+                        <div class="row" id="selectable-textures-row">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav Bar Editor/Logic/Sound -->
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" id="editor-logic-sound" style="padding: 0 0 0 0">
+                <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#"><img style="margin-top: -27%; height: 45px" src="assets/img/design/SettingsIcon.png"></a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                            <ul class="nav navbar-nav editor-navbar">
+                                <li class="active"><a href="#">Editor</a></li>
+                                <li><a href="#">Logic</a></li>
+                                <li><a href="#">Sound</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Editor/Logic/Sound -->
+                <div class="container-fluid col-lg-12 col-md-12 col-sm-12 col-xs-12" id="editor-area">
+                    <!-- EDITOR -->
+                    
+                    <!-- LOGIC -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="code-blocks-container">
+
+
+                        <svg id="code-logic-scene"
+                             xmlns:svg="http://www.w3.org/2000/svg"
+                             xmlns="http://www.w3.org/2000/svg"
+                             version="1.1"
+                             width="100%" height="500">
+
+                            <g class="draggable"
+                               transform="matrix(1 0 0 1 0 0)"
+                               onmousedown="selectElement(evt)">
+
+                                <rect
+                                      x="30" y="30"
+                                      width="170" height="40"
+                                      fill="blue">
+                                </rect>
+                                <text class="basic-text-over-svg" x="38" y="55">
+                                    Coordinate X:
+                                </text>
+                                <foreignObject x="140" y="38"
+                                               width="40" height="40">
+                                    <form>
+                                        <input class="code-input" title="Coordinate X:" type="text" value="0"/>
+                                    </form>
+                                </foreignObject>
+                                <text class="code-id"
+                                      x="38" y="55">modify X</text>
+                                <text class="mktime"
+                                      x="38" y="55"></text>
+                                <text class="myChild"
+                                      x="38" y="55"></text>
+                            </g>
+
+                            <g class="draggable joinable"
+                               transform="matrix(1 0 0 1 0 0)"
+                               onmousedown="selectElement(evt)">
+
+                                <rect class="draggable"
+                                      x="360" y="50"
+                                      width="170" height="40"
+                                      fill="green">
+                                </rect>
+
+                                <text class="basic-text-over-svg"
+                                        x="370" y="70">
+                                    Shape:
+                                </text>
+                                <foreignObject x="430" y="55"
+                                               width="90" height="40">
+                                    <select class="code-selection" title="Shape selection">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </foreignObject>
+                                <text class="code-id"
+                                      x="370" y="70">select shape</text>
+                                <text class="mktime"
+                                      x="370" y="70"></text>
+                                <text class="myChild"
+                                      x="370" y="70"></text>
+
+                            </g>
+
+
+                            <g class="draggable joinable"
+                               transform="matrix(1 0 0 1 0 0)"
+                               onmousedown="selectElement(evt)">
+                                <path d="M 100 200 L 300 200 C 325.954 191.355 311.556 145.657 300 149.448
+                                L 200 148.965 L 100 149.449 C 87.216 144.931 74.87 191.464 100 200 Z" fill="red"></path>
+
+
+                                <text class="code-id"
+                                      x="150" y="170">mod y</text>
+                                <text class="mktime"
+                                      x="150" y="170"></text>
+                                <text class="myChild"
+                                      x="150" y="170"></text>
+                            </g>
+
+
+                            <g class="draggable joinable"
+                               transform="matrix(1 0 0 1 0 0)"
+                               onmousedown="selectElement(evt)">
+                                <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
+                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="red"></path>
+
+                                <text class="code-id"
+                                      x="105" y="280">2</text>
+                                <text class="mktime"
+                                      x="105" y="280"></text>
+                                <text class="myChild"
+                                      x="105" y="280"></text>
+
+                            </g>
+
+                            <g class="draggable joinable"
+                               transform="matrix(1 0 0 1 90 150)"
+                               onmousedown="selectElement(evt)">
+                                <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
+                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="yellow"></path>
+
+                                <text class="code-id"
+                                      x="105" y="280">2</text>
+                                <text class="mktime"
+                                      x="105" y="280"></text>
+                                <text class="myChild"
+                                      x="105" y="280"></text>
+
+                            </g>
+
+
+                        </svg>
+
+
+
+
+
+
+
+
+
+
+                    </div><!-- END LOGIC -->
+                </div><!-- Editor area closing tag -->
+            </div><!-- Nav Bar Editor area closing tag -->
+        </div>
+    </div>
+</body>
+<script>
+
+    $(document).ready(function() {
+        getGetAllSvgElementsInScene();
+
+        $(window).keydown(function(event){
+            if(event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        timeStampAll();
+
+        intersectArrInit();
+
+        /*$("svg g").on("mousedown touchstart", function(e) {
+            console.log("Suc");
+            $(this).addClass('grabbing');
+            $(this).removeClass('draggable');
+            console.log(this);
+        });
+
+        $("svg g").on("mouseup touchend", function(e) {
+            console.log("dis");
+            $(this).removeClass('grabbing');
+        })*/
+
+        //console.log(getGElementFromFather("2"));
+
+    });
+
+    var currentX = 0;
+    var currentY = 0;
+    var currentMatrix = 0;
+    var childMatrix = [], child;
+    var selectedElement;
+    var tmpMatrixX, tmpMatrixY;
+    var svgScene = [], svgIntersectArr = [], svgFamilyArr = [];
+    var tmpTotaldx, tmpTotaldy;
+
+    function selectElement(evt) {
+        childMatrix = [];
+        selectedElement = evt.target.parentNode;
+        //console.log("starting movement");
+        //console.log(getSvgElementX(selectedElement) + " y: " + getSvgElementY(selectedElement));
+
+        //mouse coordinates
+        currentX = evt.clientX;
+        currentY = evt.clientY;
+        if(selectedElement.tagName === "g")
+            currentMatrix = selectedElement.getAttributeNS(null, "transform").slice(7,-1).split(' ');
+        if(selectedElement.tagName === "FORM" || selectedElement.tagName === "foreignObject")
+            return;
+
+
+        //console.log(getAllChildren(selectedElement));
+        //console.log("lenght: " + getAllChildren(selectedElement).length);
+        if(getAllChildren(selectedElement).length > 0 && getAllChildren(selectedElement)[0] !== "") {
+            for(i = 0; i < getAllChildren(selectedElement).length; i++) {
+                var childM = getPathFrommktime(getAllChildren(selectedElement)[i]).parentNode.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+                childMatrix.push({
+                    childmktime: getAllChildren(selectedElement)[i],
+                    childM: childM,
+                    childMatrixStartX: parseFloat(childM[4]),
+                    childMatrixStartY: parseFloat(childM[5])
+                });
+            }
+        }
+        console.log(childMatrix);
+
+
+        for(var i = 0; i < currentMatrix.length; i++) {
+            currentMatrix[i] = parseFloat(currentMatrix[i]);
+        }
+        tmpMatrixX = currentMatrix[4];
+        tmpMatrixY = currentMatrix[5];
+
+        selectedElement.setAttributeNS(null, "onmousemove", "moveElement(evt)");
+        selectedElement.setAttributeNS(null, "onmouseleave", "deselectElement(evt)");
+        selectedElement.setAttributeNS(null, "onmouseup", "deselectElement(evt)");
+    }
+
+    function moveElement(evt) {
+        var dx = evt.clientX - currentX;
+        var dy = evt.clientY - currentY;
+        currentMatrix[4] += dx;
+        currentMatrix[5] += dy;
+
+        //console.log("dx: " + dx + " dy: " + dy);
+
+        selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
+
+        currentX = evt.clientX;
+        currentY = evt.clientY;
+
+        //updating intersection array
+        intersectArrUpdate(selectedElement);
+        //finding intersection
+        findIntersection(selectedElement);
+
+
+        //translate children
+        for(var i = 0; i < childMatrix.length; i++) {
+            var tmpMatrix = childMatrix[i].childM;
+            //console.log("before modification");
+            //console.log(tmpMatrix);
+            var child = getPathFrommktime(childMatrix[i].childmktime).parentNode;
+
+            for (var k = 0; k < tmpMatrix.length; k++) {
+                tmpMatrix[k] = parseFloat(tmpMatrix[k]);
+            }
+            tmpMatrix[4] += dx;
+            tmpMatrix[5] += dy;
+            child.setAttributeNS(null, "transform", "matrix(" + tmpMatrix.join(' ') + ")");
+
+            //console.log("After modification");
+            //console.log(tmpMatrix);
+
+            //updating intersection array
+            intersectArrUpdate(child);
+            //finding intersection
+            //findIntersection(child);
+        }
+
+
+    }
+
+    function deselectElement(evt) {
+        if(selectedElement !== 0){
+            selectedElement.removeAttributeNS(null, "onmousemove");
+            selectedElement.removeAttributeNS(null, "onmouseleave");
+            selectedElement.removeAttributeNS(null, "onmouseup");
+            //console.log("completing movement");
+            //console.log(getSvgElementX(selectedElement) + " y: " + getSvgElementY(selectedElement));
+
+            var svgArr = $("#code-logic-scene").children();
+            for(var i = 0; i < svgArr.length; i++){
+                //Killing existing father of child and giving new father
+                if(svgArr[i].getElementsByClassName("myChild")[0].textContent.indexOf(getmktime(selectedElement)) !== -1) {
+                    var childData = getAllChildren(svgArr[i])//svgArr[i].getElementsByClassName("myChild")[0].textContent.split(",");
+                    var cleanData = "";
+                    //console.log("ChildData: " + childData + " len: " + childData.length);
+                    for(var j = 0; j < childData.length; j++){
+                        if(childData[j] !== getmktime(selectedElement)){
+                            //console.log("+= " + childData[j] + ",");
+                            cleanData += childData[j] + ",";
+                        }
+                        else
+                            break;
+                    }
+                    if(cleanData.length !== 0)
+                        cleanData.substring(0, cleanData.length - 1);
+                    else
+                        cleanData = "";
+                    //console.log("cleanData: " + cleanData);
+                    svgArr[i].getElementsByClassName("myChild")[0].innerHTML = cleanData;
+                }
+
+                //Found intersection
+                if((svgArr[i].firstElementChild.getAttribute("stroke") === "green") &&
+                    svgArr[i].firstElementChild.getAttribute("stroke-dasharray") === "0") {
+                    //Joining element to another by y axis
+                    while (svgArr[i].firstElementChild.getAttribute("stroke") === "green"){
+                        //console.log("Main x: " + getElementXf(svgArr[i]) + " y: " + getElementYt(svgArr[i]));
+                        //console.log("Selected x: " + getElementXf(selectedElement) + " y: " + getElementYf(selectedElement));
+                        currentMatrix[5] += 1;
+                        tmpTotaldy += 1;
+                        selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
+
+                        //updating intersection array
+                        intersectArrUpdate(selectedElement);
+                        //finding intersection
+                        findIntersection(selectedElement);
+                    }
+                    //Aligning element by x axis
+                    while(getElementXf(svgArr[i]) !== getElementXf(selectedElement)){
+                        if(getElementXf(svgArr[i]) <= getElementXf(selectedElement)) {
+                            currentMatrix[4] -= 1;
+                            tmpTotaldx -= 1;
+                        }
+                        if(getElementXf(svgArr[i]) >= getElementXf(selectedElement)) {
+                            currentMatrix[4] += 1;
+                            tmpTotaldy += 1;
+                        }
+                        selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
+
+                        //updating intersection array
+                        intersectArrUpdate(selectedElement);
+                        //finding intersection
+                        findIntersection(selectedElement);
+                    }
+
+
+
+                    //Say that selected element is child
+                    //console.log(svgArr[i]);
+                    var childrenInfo = svgArr[i].getElementsByClassName("myChild")[0].textContent;
+                    //console.log("children info: " + childrenInfo);
+                    //console.log("children len: " + childrenInfo.length);
+                    if(childrenInfo.indexOf(getmktime(selectedElement)) === -1)
+                        svgArr[i].getElementsByClassName("myChild")[0].innerHTML = getmktime(selectedElement);
+                    if(childrenInfo.indexOf(getmktime(selectedElement)) === -1 && childrenInfo.length > 0)
+                        svgArr[i].getElementsByClassName("myChild")[0].innerHTML = childrenInfo + "," + getmktime(selectedElement);
+                    ///console.log(getAllChildren(svgArr[i]));
+
+
+
+                    var fathersName = getmktime(svgArr[i]);
+                    //console.log("Father's element name: " + fathersName);
+                    childrenInfo = getAllChildren(selectedElement);
+
+
+                    //TURI VEIKTI KAI TA KA JUNGIU TURI VAIKU
+                    if(childrenInfo.length > 0 && childrenInfo[0] !== ""){
+                        //childrenInfo = selectedElement.getElementsByClassName("myChild")[0].textContent;
+                        console.log("PRIJUNGTI VAIKU PRIE NAUJO TEVO su vardais: " + childrenInfo);
+                        console.log("TEVOS VARDAS: " + fathersName);
+                        var fatherChildInfo = getAllChildren(svgArr[i]);
+                        for(j = 0; j < childrenInfo.length; j++) {
+                            //TODO HERE ne children info -> turi tikrinti tai kas pas teva yra tevo child info //
+
+                            console.log("bef");
+                            console.log(getAllChildren(svgArr[i]));
+                            if (getAllChildren(svgArr[i]).indexOf(childrenInfo[j]) === -1 && childrenInfo.length > 0)
+                                getPathFrommktime(fathersName).parentNode.getElementsByClassName("myChild")[0].innerHTML =
+                                    getAllChildren(svgArr[i]) + "," + childrenInfo[j];
+                            console.log("aft");
+                            console.log(getAllChildren(svgArr[i]));
+                        }
+
+                        //paimti visus vaikus prijungiamo objekto
+                        console.log(getAllChildren(selectedElement));
+                        childrenInfo = getAllChildren(selectedElement);
+                        for(j = 0; j < childrenInfo.length; j++){
+                            console.log(getPathFrommktime(childrenInfo[j]).parentNode);
+                            var childM = getPathFrommktime(childrenInfo[j]).parentNode.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+                            for(k = 0; k < childM.length; k++) {
+                                childM[k] = parseFloat(childM[k]);
+                            }
+                            childM[4] += tmpTotaldx;
+                            childM[5] += tmpTotaldy;
+
+                            getPathFrommktime(childrenInfo[j]).parentNode.setAttributeNS(null, "transform", "matrix(" + childM.join(' ') + ")");
+
+                            //updating intersection array
+                            intersectArrUpdate(getPathFrommktime(childrenInfo[j]).parentNode);
+                        }
+
+
+
+
+                    }
+                    //ALIGN PAGAL TEVO X IR Y
+
+
+                    //console.log("Father's childs");
+                    //console.log(getAllChildren(svgArr[i]));
+
+
+
+
+
+
+
+                    //If object already is child of some one, append fathers father element
+
+                    //get appended father element -> in while should be going till no child matches found
+
+                    //foras kur iesko svg elemento kur yra child atribute fathers name
+                    for (var l = 0; l < svgArr.length; l++){
+                        //console.log(getAllChildren(svgArr[l]));
+                        childData = getAllChildren(svgArr[l]);
+                        for(j = 0; j < childData.length; j++){
+                            if(childData[j] === fathersName){
+                                //console.log("Father to append: " + getmktime(svgArr[l]));
+                                //console.log(svgArr[l]);
+                                childrenInfo = svgArr[l].getElementsByClassName("myChild")[0].textContent;
+                                if(childrenInfo.indexOf(getmktime(selectedElement)) === -1 && childrenInfo.length > 0)
+                                    svgArr[l].getElementsByClassName("myChild")[0].innerHTML = childrenInfo + "," + getmktime(selectedElement);
+                                break;
+                            }
+                        }
+                    }
+
+                    //kazkaip patikrinti kad ne overvritintu esamo tevo
+                    //Jeigu noriu prijungti TEVA su vaikais
+
+
+                    //Papildomai allign visu bloku pagal tevo x ir y
+
+                }
+                //If element can not be joined
+                if((svgArr[i].firstElementChild.getAttribute("stroke") === "green") &&
+                    svgArr[i].firstElementChild.getAttribute("stroke-dasharray") !== "0") {
+                    currentMatrix[4] = tmpMatrixX;
+                    currentMatrix[5] = tmpMatrixY;
+                    selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
+                    //updating intersection array
+                    intersectArrUpdate(selectedElement);
+                    //finding intersection
+                    findIntersection(selectedElement);
+
+                    for(i = 0; i < childMatrix.length; i++) {
+                        var tmpMatrix = childMatrix[i].childM;
+                        var child = getPathFrommktime(childMatrix[i].childmktime).parentNode;
+
+                        for (var k = 0; k < tmpMatrix.length; k++) {
+                            tmpMatrix[k] = parseFloat(tmpMatrix[k]);
+                        }
+                        tmpMatrix[4] = childMatrix[i].childMatrixStartX;
+                        tmpMatrix[5] = childMatrix[i].childMatrixStartY;
+                        child.setAttributeNS(null, "transform", "matrix(" + tmpMatrix.join(' ') + ")");
+
+                        //updating intersection array
+                        intersectArrUpdate(child);
+                    }
+                }
+            }
+            //console.log("x: " + tmpMatrixX + " y: " + tmpMatrixY);
+
+
+
+            selectedElement = 0;
+            childMatrix = [];
+            tmpTotaldx = 0;
+            tmpTotaldy = 0;
+        }
+    }
+    //Get selected element all children
+    function getAllChildren(element) { //TODO split by comma, also when adding child appending by comma
+        var children = element.getElementsByClassName("myChild");
+        return children[0].textContent.split(",");
+    }
+
+    //get svg element x
+    function getSvgElementX(element){
+        if(element.tagName === "g") {
+            var matrix = element.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+            for (var i = 0; i < matrix.length; i++) {
+                matrix[i] = parseFloat(matrix[i]);
+            }
+            return Math.round(element.getBBox().x + matrix[4]);
+        }
+    }
+    //get svg element y
+    function getSvgElementY(element){
+        if(element.tagName === "g") {
+            var matrix = element.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+            for (var i = 0; i < matrix.length; i++) {
+                matrix[i] = parseFloat(matrix[i]);
+            }
+            return Math.round(element.getBBox().y + matrix[5]);
+        }
+    }
+    //get all svg elements in scene
+    function getGetAllSvgElementsInScene() {
+        var svgArr = $("#code-logic-scene").children();
+
+        for(var i = 0; i < svgArr.length; i++){
+            //console.log(svgArr[i]);
+            //console.log("X: " + getSvgElementX(svgArr[i]) + "  Y: " + getSvgElementY(svgArr[i]));
+            //console.log("Code ID: " + getSvgCodeId(svgArr[i]));
+            //console.log("Value: " + getDataFromSvgForm(svgArr[i]));
+            svgScene.push({
+                mktime: getmktime(svgArr[i]),
+                codeID: getSvgCodeId(svgArr[i]),
+                value: getDataFromSvgForm(svgArr[i]),
+                x: getSvgElementX(svgArr[i]),
+                y: getSvgElementY(svgArr[i])
+            })
+        }
+
+
+        console.log(svgScene);
+    }
+    //get input data from svg element
+    function getDataFromSvgForm(element) {
+        var data, e;
+        if(element.getElementsByClassName("code-selection").length > 0) {
+            e = element.getElementsByClassName("code-selection")[0];
+            data = e.options[e.selectedIndex].value;
+        }
+        if(element.getElementsByClassName("code-input").length > 0) {
+            e = element.getElementsByClassName("code-input")[0];
+            data = e.value;
+        }
+        return data;
+    }
+    //get svg element code-id
+    function getSvgCodeId(element) {
+        return element.getElementsByClassName("code-id")[0].textContent;
+    }
+
+    //TODO write script which adds element to intersecion array
+    //Initializing intersection array -> array of elements dimensions
+    function intersectArrInit(){
+        var svgArr = $("#code-logic-scene").children();
+        for(var i = 0; i < svgArr.length; i++){
+            //console.log(svgArr[i]);
+            //console.log("from x: " + getSvgElementX(svgArr[i]) + "  from y: " + getSvgElementY(svgArr[i]));
+            //console.log("to x: " + Math.round(svgArr[i].getBBox().width + getSvgElementX(svgArr[i])) +
+              //  "  to y: " + Math.round(svgArr[i].getBBox().height + getSvgElementY(svgArr[i])));
+
+            //console.log(svgArr[i]);
+            svgIntersectArr.push({
+                mktime: getmktime(svgArr[i]),
+                xf: getSvgElementX(svgArr[i]),
+                xt: Math.round(svgArr[i].getBBox().width + getSvgElementX(svgArr[i])),
+                yf: getSvgElementY(svgArr[i]),
+                yt: Math.round(svgArr[i].getBBox().height + getSvgElementY(svgArr[i])),
+                joinable: svgArr[i].classList.contains('joinable')
+            });
+        }
+        //console.log(svgIntersectArr);
+    }
+    //On selected element move update intersection array
+    function intersectArrUpdate(element) {
+        //console.log(getmktime(element));
+        for(var i = 0; i < svgIntersectArr.length; i++){
+            if(svgIntersectArr[i].mktime === getmktime(element)){
+                svgIntersectArr[i].xf = getElementXf(element);
+                svgIntersectArr[i].xt = getElementXt(element);
+                svgIntersectArr[i].yf = getElementYf(element);
+                svgIntersectArr[i].yt = getElementYt(element);
+                return;
+            }
+        }
+    }
+    //Finding intersection
+    function findIntersection(element) {
+        //console.log("xf: " + getElementXf(element) + " xt: " + getElementXt(element));
+        //console.log("yf: " + getElementYf(element) + " yt: " + getElementYt(element));
+
+        var elementX = Math.round(getElementXf(element) + ((getElementXt(element) - getElementXf(element)) / 2));
+        var elementY = getElementYf(element);
+        var selectedElementIndex;
+        //console.log(elementX + " " + elementY)
+        //clear unintersected borders
+        for(var i = 0; i < svgIntersectArr.length; i++) {
+            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "black");
+            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "2");
+            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "0");
+        }
+        for(i = 0; i < svgIntersectArr.length; i++){
+            if(svgIntersectArr[i].mktime !== getmktime(element)){
+                for(var x = svgIntersectArr[i].xf; x < svgIntersectArr[i].xt; ++x){
+                    for(var y = svgIntersectArr[i].yf; y < svgIntersectArr[i].yt; ++y){
+                        if(x === elementX && y === elementY){
+                            //console.log("Intersects with: " + svgIntersectArr[i].mktime + " element.");
+                            previewIntersection(i);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    //Draw border on intersected element
+    //visiems anuliuojam piesima o veliau piesiam tik tiem kas dbr intersectinasi
+    function previewIntersection(elementIndex) {
+        for(var i = 0; i < svgIntersectArr.length; i++){
+            if(i === elementIndex){
+                //console.log(svgIntersectArr[i].mktime);
+                //console.log(getPathFrommktime(svgIntersectArr[i].mktime));
+                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "green");
+                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "4");
+                //jeigu mano arba kitas jungiamas elementas yra unjoined
+                var hasClass = selectedElement.classList.contains('joinable');
+                if(!(hasClass === svgIntersectArr[i].joinable))
+                    getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "5,5,5");
+            }
+            else {
+                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "black");
+                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "2");
+                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "0");
+            }
+        }
+    }
+    //Timestamp svg element on creation //TODO kai kuriamas elementas metamas time stamp VELIAU
+    function timeStampAll() {
+        var svgArr = $("#code-logic-scene").children();
+        for(var i = 0; i < svgArr.length; i++){
+            //svgArr[i].getElementsByClassName("mktime")[0].innerHTML = mktime() + i; //patestuoti galima su [+ i]
+            svgArr[i].getElementsByClassName("mktime")[0].innerHTML = i;
+        }
+    }
+    //Create timestamp
+    function mktime(){
+        var d = new Date();
+        return d.getTime();
+    }
+    //Get svg path element from mktime value
+    function getPathFrommktime(value) {
+        var svg = $("#code-logic-scene");
+        var tmpVal;
+        var elements = svg[0].getElementsByClassName("mktime");
+        for(var i = 0; i < elements.length; i++) {
+            if (elements[i].textContent === value) {
+                tmpVal = elements[i].parentNode;
+                return tmpVal.firstElementChild;
+            }
+        }
+
+    }
+    //Get mktime value from svg <g> element
+    function getmktime(element) {
+        return element.getElementsByClassName("mktime")[0].textContent;
+    }
+    //Get element xf
+    function getElementXf(element) {
+        return getSvgElementX(element);
+    }
+    //Get element xt
+    function getElementXt(element) {
+        return Math.round(element.getBBox().width + getSvgElementX(element))
+    }
+    //Get element yf
+    function getElementYf(element) {
+        return getSvgElementY(element);
+    }
+    //Get element yt
+    function getElementYt(element){
+        return Math.round(element.getBBox().height + getSvgElementY(element));
+    }
+
+    //Create json array of all svg elements in scene
+
+   </script>
+
+
+
+</html>

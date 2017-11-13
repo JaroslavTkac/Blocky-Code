@@ -1,0 +1,292 @@
+body {
+    background-color: #f5f5f5;
+}
+p{
+    font-size: 1em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.btn{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.nav.navbar-nav li a {
+    color: #f5f5f5;
+}
+.my{
+    margin: auto;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+.my a{
+    color: #f5f5f5;
+}
+.my a:hover{
+    color: #ea640b;
+    text-decoration: none;
+}
+.affix {
+    top: 0;
+    width: 100%;
+    z-index: 9999 !important;
+}
+
+/* Login window */
+
+/* Carousel Styling */
+#theCarousel{
+
+}
+.slide1{
+    background-image: url('../img/design/Demo.jpg');
+    height: 550px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.slide2{
+    background-image: url('../img/design/Update.png');
+    height: 550px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.carousel-caption h1{
+    font-size: 5.6em;
+    font-family: 'Pacifico', cursive;
+    padding-bottom: .4em;
+}
+.carousel-caption h3{
+    font-size: 2em;
+    font-family: 'Pacifico',cursive;
+    padding-bottom: .4em;
+}
+.carousel-caption p{
+    font-size: 2em;
+    font-family: 'Pacifico',cursive;
+}
+
+/* About StickJS*/
+.title{
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    font-size: 2.2em;
+    margin-top: -2%
+}
+.about{
+    background-color: #c3d7df;
+    margin-bottom: 0;
+}
+.creator{
+    background-color: #6991ac;
+    margin-bottom: 0;
+}
+.update{
+    margin-bottom: 0;
+}
+#update-log ul li{
+    text-align: left;
+    font-size: 1em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#update-log h2{
+    text-align: center;
+}
+.update-hr{
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #6991ac;
+    margin: 1em 0;
+    padding: 0;
+}
+hr{
+    display: block;
+    border: 0;
+    border-top: 2px solid #67727a;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+footer p{
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+canvas {
+    width: 100%;
+    height: auto;
+}
+/* Editor page */
+/* Coloring */
+#editor-logic-sound{
+
+}
+#editor-area{
+    padding: 0 0 0 0;
+}
+#editor-container{
+    padding-left: 4px;
+    padding-right: 4px;
+}
+#color-picker{
+    border-radius: 2%;
+}
+/* TODO: color theme for editor background with gradient */
+#texture-picker{
+    overflow-y: scroll;
+    max-height: 300px;
+    border-radius: 2%;
+}
+#saved-shape-container{
+    padding: 0 0 0 0;
+}
+#saved-shape-canvas-container{
+    overflow-y: scroll;
+    width: 100%;
+    border-radius: 2%;
+    padding: 0 0 0 0;
+    border: 1px #6991ac solid;
+}
+#selectable-shapes{
+    overflow-y: scroll;
+    max-height: 300px;
+    border: 2px #6991ac solid;
+    margin-bottom: 1%;
+}
+#selectable-music{
+    overflow-y: scroll;
+    max-height: 300px;
+    border: 2px #6991ac solid;
+    margin-bottom: 1%;
+}
+#selectable-textures{
+    overflow-y: scroll;
+    max-height: 300px;
+    border: 2px #6991ac solid;
+    margin-bottom: 1%;
+}
+.thumbnail{
+    border:none !important;
+    background: transparent !important;
+    box-shadow:none !important;
+    margin: 1% 1% 0 1%;
+    padding-left: 0;
+    padding-right: 0;
+}
+#radioBtn .notActive{
+    color: #3276b1;
+    background-color: #fff;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-image:none !important;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    color:#ea640b;
+}
+
+.overlay-btn{
+    margin-top: -5%;
+}
+
+#code-blocks-container{
+    padding: 0 0 0 0;
+}
+
+.texture-padding{
+    padding: 0 1% 0 1%;
+}
+.texture{
+    margin: 0 0 0 0;
+}
+/* SLIDERS */
+
+#RC .slider-selection {
+    background: #FF8282;
+}
+#RC .slider-handle {
+    background: red;
+}
+#GC .slider-selection {
+    background: #428041;
+}
+#GC .slider-handle {
+    background: green;
+}
+#BC .slider-selection {
+    background: #8283FF;
+}
+#BC .slider-handle {
+    border-bottom-color: blue;
+}
+#combined .slider-selection{
+    background: #535CA3;
+}
+#combined .slider-handle{
+    background: #7C8BFF;
+}
+/* Opacity slider */
+.rs-bg-color{
+    background: #e3eef4;
+}
+.rs-range-color {
+    background: darkred;
+}
+.rs-border{
+    border: none;
+}
+.rs-handle{
+    background: #2364ce;
+}
+
+
+/* Code Blocks */
+.draggable {
+    cursor: grab;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+svg text {
+    cursor: grab;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+svg text::selection {
+    cursor: grab;
+    background: none;
+}
+svg g path:hover {
+     stroke: blue;
+     stroke-width : 3.5;
+}
+svg g rect:hover {
+    stroke: blue;
+    stroke-width : 3.5;
+}
+.code-id,
+.myFather,
+.myChild,
+.mktime{
+    visibility: hidden;
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
