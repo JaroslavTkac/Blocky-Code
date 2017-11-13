@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+assets/img/textures
+assets/js/WebglHelper.js
+assets/js/UploadHandler.js
+assets/js/UserInterfaceScripts.js
+
