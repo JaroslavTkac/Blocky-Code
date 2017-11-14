@@ -3,9 +3,11 @@
 ### Example user template
 
 # IntelliJ project files
-.idea
+/.idea
 assets/img/textures
 assets/js/WebglHelper.js
 assets/js/UploadHandler.js
 assets/js/UserInterfaceScripts.js
+assets/js/webgl-utils.js
+assets/js/glMatrix-0.9.5.min.js
 

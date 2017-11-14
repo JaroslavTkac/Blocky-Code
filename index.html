@@ -250,12 +250,12 @@
                                 <rect
                                       x="30" y="30"
                                       width="170" height="40"
-                                      fill="blue">
+                                      fill="blue" stroke="black" stroke-width="2">
                                 </rect>
                                 <text class="basic-text-over-svg" x="38" y="55">
                                     Coordinate X:
                                 </text>
-                                <foreignObject x="140" y="38"
+                                <foreignObject x="140" y="32"
                                                width="40" height="40">
                                     <form>
                                         <input class="code-input" title="Coordinate X:" type="text" value="0"/>
@@ -264,7 +264,7 @@
                                 <text class="code-id"
                                       x="38" y="55">modify X</text>
                                 <text class="mktime"
-                                      x="38" y="55"></text>
+                                      x="38" y="55">blue</text>
                                 <text class="myChild"
                                       x="38" y="55"></text>
                             </g>
@@ -276,14 +276,14 @@
                                 <rect class="draggable"
                                       x="360" y="50"
                                       width="170" height="40"
-                                      fill="green">
+                                      fill="green" stroke="black" stroke-width="2">
                                 </rect>
 
                                 <text class="basic-text-over-svg"
                                         x="370" y="70">
                                     Shape:
                                 </text>
-                                <foreignObject x="430" y="55"
+                                <foreignObject x="430" y="51"
                                                width="90" height="40">
                                     <select class="code-selection" title="Shape selection">
                                         <option value="volvo">Volvo</option>
@@ -295,7 +295,7 @@
                                 <text class="code-id"
                                       x="370" y="70">select shape</text>
                                 <text class="mktime"
-                                      x="370" y="70"></text>
+                                      x="370" y="70">green</text>
                                 <text class="myChild"
                                       x="370" y="70"></text>
 
@@ -306,13 +306,13 @@
                                transform="matrix(1 0 0 1 0 0)"
                                onmousedown="selectElement(evt)">
                                 <path d="M 100 200 L 300 200 C 325.954 191.355 311.556 145.657 300 149.448
-                                L 200 148.965 L 100 149.449 C 87.216 144.931 74.87 191.464 100 200 Z" fill="red"></path>
+                                L 200 148.965 L 100 149.449 C 87.216 144.931 74.87 191.464 100 200 Z" fill="orange" stroke="black" stroke-width="2"></path>
 
 
                                 <text class="code-id"
                                       x="150" y="170">mod y</text>
                                 <text class="mktime"
-                                      x="150" y="170"></text>
+                                      x="150" y="170">orange</text>
                                 <text class="myChild"
                                       x="150" y="170"></text>
                             </g>
@@ -322,12 +322,12 @@
                                transform="matrix(1 0 0 1 0 0)"
                                onmousedown="selectElement(evt)">
                                 <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
-                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="red"></path>
+                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="red" stroke="black" stroke-width="2"></path>
 
                                 <text class="code-id"
                                       x="105" y="280">2</text>
                                 <text class="mktime"
-                                      x="105" y="280"></text>
+                                      x="105" y="280">red</text>
                                 <text class="myChild"
                                       x="105" y="280"></text>
 
@@ -337,12 +337,27 @@
                                transform="matrix(1 0 0 1 90 150)"
                                onmousedown="selectElement(evt)">
                                 <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
-                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="yellow"></path>
+                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="yellow" stroke="black" stroke-width="2"></path>
 
                                 <text class="code-id"
                                       x="105" y="280">2</text>
                                 <text class="mktime"
+                                      x="105" y="280">yellow</text>
+                                <text class="myChild"
                                       x="105" y="280"></text>
+
+                            </g>
+
+                            <g class="draggable joinable"
+                               transform="matrix(1 0 0 1 190 -30)"
+                               onmousedown="selectElement(evt)">
+                                <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
+                                 L 100 253.136 C 74.631 264.692 89.202 304.561 100 300 Z" fill="brown" stroke="black" stroke-width="2"></path>
+
+                                <text class="code-id"
+                                      x="105" y="280">2</text>
+                                <text class="mktime"
+                                      x="105" y="280">brown</text>
                                 <text class="myChild"
                                       x="105" y="280"></text>
 
@@ -369,7 +384,7 @@
 <script>
 
     $(document).ready(function() {
-        getGetAllSvgElementsInScene();
+        getDataArrayOfSvgInScene();
 
         $(window).keydown(function(event){
             if(event.keyCode === 13) {
@@ -379,83 +394,74 @@
         });
 
         timeStampAll();
-
         intersectArrInit();
-
-        /*$("svg g").on("mousedown touchstart", function(e) {
-            console.log("Suc");
-            $(this).addClass('grabbing');
-            $(this).removeClass('draggable');
-            console.log(this);
-        });
-
-        $("svg g").on("mouseup touchend", function(e) {
-            console.log("dis");
-            $(this).removeClass('grabbing');
-        })*/
-
-        //console.log(getGElementFromFather("2"));
-
     });
 
+    var selectedElement;
     var currentX = 0;
     var currentY = 0;
     var currentMatrix = 0;
-    var childMatrix = [], child;
-    var selectedElement;
+    var childMatrix = [];
+    var svgScene = [], svgIntersectArr = [];
+    var tmpTotalDx, tmpTotalDy;
     var tmpMatrixX, tmpMatrixY;
-    var svgScene = [], svgIntersectArr = [], svgFamilyArr = [];
-    var tmpTotaldx, tmpTotaldy;
 
+    /**
+     * Selecting svg element function. Used to init selectedElement by svg <g> element.
+     * @param evt
+     */
     function selectElement(evt) {
+        //On element click preparing clean array for selected element children
         childMatrix = [];
+        //Taking svg <g> element
         selectedElement = evt.target.parentNode;
-        //console.log("starting movement");
-        //console.log(getSvgElementX(selectedElement) + " y: " + getSvgElementY(selectedElement));
 
-        //mouse coordinates
+        //Tracking mouse coordinates
         currentX = evt.clientX;
         currentY = evt.clientY;
+        //Preventing from error caused by clicking on non <g> element
         if(selectedElement.tagName === "g")
             currentMatrix = selectedElement.getAttributeNS(null, "transform").slice(7,-1).split(' ');
         if(selectedElement.tagName === "FORM" || selectedElement.tagName === "foreignObject")
             return;
 
-
-        //console.log(getAllChildren(selectedElement));
-        //console.log("lenght: " + getAllChildren(selectedElement).length);
-        if(getAllChildren(selectedElement).length > 0 && getAllChildren(selectedElement)[0] !== "") {
-            for(i = 0; i < getAllChildren(selectedElement).length; i++) {
-                var childM = getPathFrommktime(getAllChildren(selectedElement)[i]).parentNode.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+        //
+        var childrenData = getChildrenData(selectedElement);
+        if(childrenData.length > 0 && childrenData[0] !== "") {
+            for(i = 0; i < childrenData.length; i++) {
+                var childM = getGelementByName(childrenData[i]).getAttributeNS(null, "transform").slice(7, -1).split(' ');
                 childMatrix.push({
-                    childmktime: getAllChildren(selectedElement)[i],
+                    childmktime: getChildrenData(selectedElement)[i],
                     childM: childM,
                     childMatrixStartX: parseFloat(childM[4]),
                     childMatrixStartY: parseFloat(childM[5])
                 });
             }
         }
-        console.log(childMatrix);
 
-
+        //Creating array of values from svg element transform translate attribute
         for(var i = 0; i < currentMatrix.length; i++) {
             currentMatrix[i] = parseFloat(currentMatrix[i]);
         }
+        //Saving starting x and y coordinates for selected element, on case if element would be dragged over unjoinable element
         tmpMatrixX = currentMatrix[4];
         tmpMatrixY = currentMatrix[5];
 
+        //Setting event listeners (attributes) to svg <g> element
         selectedElement.setAttributeNS(null, "onmousemove", "moveElement(evt)");
         selectedElement.setAttributeNS(null, "onmouseleave", "deselectElement(evt)");
         selectedElement.setAttributeNS(null, "onmouseup", "deselectElement(evt)");
     }
-
+    /**
+     * Function calling every time element is moved.
+     * Changing svg <g> element position in scene and triggers functions to find intersections.
+     * @param evt
+     */
     function moveElement(evt) {
         var dx = evt.clientX - currentX;
         var dy = evt.clientY - currentY;
         currentMatrix[4] += dx;
         currentMatrix[5] += dy;
-
-        //console.log("dx: " + dx + " dy: " + dy);
 
         selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
 
@@ -467,73 +473,74 @@
         //finding intersection
         findIntersection(selectedElement);
 
-
-        //translate children
+        //transform translate children of selected element
         for(var i = 0; i < childMatrix.length; i++) {
             var tmpMatrix = childMatrix[i].childM;
-            //console.log("before modification");
-            //console.log(tmpMatrix);
-            var child = getPathFrommktime(childMatrix[i].childmktime).parentNode;
+            var child = getGelementByName(childMatrix[i].childmktime);
 
-            for (var k = 0; k < tmpMatrix.length; k++) {
-                tmpMatrix[k] = parseFloat(tmpMatrix[k]);
+            for (var j = 0; j < tmpMatrix.length; j++) {
+                tmpMatrix[j] = parseFloat(tmpMatrix[j]);
             }
             tmpMatrix[4] += dx;
             tmpMatrix[5] += dy;
             child.setAttributeNS(null, "transform", "matrix(" + tmpMatrix.join(' ') + ")");
 
-            //console.log("After modification");
-            //console.log(tmpMatrix);
-
             //updating intersection array
             intersectArrUpdate(child);
-            //finding intersection
-            //findIntersection(child);
         }
-
-
     }
-
+    /**
+     * Big function - a lot of responsibilities
+     * @param evt
+     */
     function deselectElement(evt) {
         if(selectedElement !== 0){
             selectedElement.removeAttributeNS(null, "onmousemove");
             selectedElement.removeAttributeNS(null, "onmouseleave");
             selectedElement.removeAttributeNS(null, "onmouseup");
-            //console.log("completing movement");
-            //console.log(getSvgElementX(selectedElement) + " y: " + getSvgElementY(selectedElement));
+            var childData;
 
-            var svgArr = $("#code-logic-scene").children();
-            for(var i = 0; i < svgArr.length; i++){
+            var svgArr = document.getElementById("code-logic-scene").children;
+            for(var i = 0; i < svgArr.length; i++) {
                 //Killing existing father of child and giving new father
-                if(svgArr[i].getElementsByClassName("myChild")[0].textContent.indexOf(getmktime(selectedElement)) !== -1) {
-                    var childData = getAllChildren(svgArr[i])//svgArr[i].getElementsByClassName("myChild")[0].textContent.split(",");
+                //Going through all svg <g> elements
+                //and deleting SELECTED element NAME from every element child section
+                if ((svgArr[i].getElementsByClassName("myChild")[0].textContent.indexOf(getmktime(selectedElement)) !== -1) &&
+                    (tmpMatrixX !== currentMatrix[4] || tmpMatrixY !== currentMatrix[5])) {
+                    console.log("Going to clean father's ** " + getmktime(svgArr[i]) + " ** children");
+                    console.log(i);
+                    childData = getChildrenData(svgArr[i]);
                     var cleanData = "";
-                    //console.log("ChildData: " + childData + " len: " + childData.length);
-                    for(var j = 0; j < childData.length; j++){
-                        if(childData[j] !== getmktime(selectedElement)){
-                            //console.log("+= " + childData[j] + ",");
-                            cleanData += childData[j] + ",";
+                    for (var j = 0; j < childData.length; j++) {
+                        if (childData[j] !== getmktime(selectedElement)) {
+                            if (j > 0)
+                                cleanData += ",";
+                            cleanData += childData[j];
                         }
                         else
                             break;
                     }
-                    if(cleanData.length !== 0)
-                        cleanData.substring(0, cleanData.length - 1);
-                    else
-                        cleanData = "";
-                    //console.log("cleanData: " + cleanData);
+                    console.log("child data: " + childData);
+                    console.log("cleaned child data: " + cleanData);
                     svgArr[i].getElementsByClassName("myChild")[0].innerHTML = cleanData;
                 }
-
+            }
+            //TODO Apsauga kad negalima prijungti prie elemento jei jis jau turi vaikus
+            //TODO on Hover tevo nupiesti melina borderi ir visiems vaikams
+            for(i = 0; i < svgArr.length; i++){
                 //Found intersection
                 if((svgArr[i].firstElementChild.getAttribute("stroke") === "green") &&
                     svgArr[i].firstElementChild.getAttribute("stroke-dasharray") === "0") {
+
+                    //Main father -> element that was with green border
+                    var fathersName = getmktime(svgArr[i]);
+                    //Main father -> svg <g> element
+                    var father = svgArr[i];
+
                     //Joining element to another by y axis
-                    while (svgArr[i].firstElementChild.getAttribute("stroke") === "green"){
-                        //console.log("Main x: " + getElementXf(svgArr[i]) + " y: " + getElementYt(svgArr[i]));
-                        //console.log("Selected x: " + getElementXf(selectedElement) + " y: " + getElementYf(selectedElement));
+                    while (father.firstElementChild.getAttribute("stroke") === "green"){
                         currentMatrix[5] += 1;
-                        tmpTotaldy += 1;
+                        tmpTotalDy += 1;
                         selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
 
                         //updating intersection array
@@ -542,14 +549,14 @@
                         findIntersection(selectedElement);
                     }
                     //Aligning element by x axis
-                    while(getElementXf(svgArr[i]) !== getElementXf(selectedElement)){
-                        if(getElementXf(svgArr[i]) <= getElementXf(selectedElement)) {
+                    while(getElementXf(father) !== getElementXf(selectedElement)){
+                        if(getElementXf(father) <= getElementXf(selectedElement)) {
                             currentMatrix[4] -= 1;
-                            tmpTotaldx -= 1;
+                            tmpTotalDx -= 1;
                         }
-                        if(getElementXf(svgArr[i]) >= getElementXf(selectedElement)) {
+                        if(getElementXf(father) >= getElementXf(selectedElement)) {
                             currentMatrix[4] += 1;
-                            tmpTotaldy += 1;
+                            tmpTotalDy += 1;
                         }
                         selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
 
@@ -560,104 +567,65 @@
                     }
 
 
-
                     //Say that selected element is child
-                    //console.log(svgArr[i]);
-                    var childrenInfo = svgArr[i].getElementsByClassName("myChild")[0].textContent;
-                    //console.log("children info: " + childrenInfo);
-                    //console.log("children len: " + childrenInfo.length);
-                    if(childrenInfo.indexOf(getmktime(selectedElement)) === -1)
-                        svgArr[i].getElementsByClassName("myChild")[0].innerHTML = getmktime(selectedElement);
-                    if(childrenInfo.indexOf(getmktime(selectedElement)) === -1 && childrenInfo.length > 0)
-                        svgArr[i].getElementsByClassName("myChild")[0].innerHTML = childrenInfo + "," + getmktime(selectedElement);
-                    ///console.log(getAllChildren(svgArr[i]));
+                    childData = father.getElementsByClassName("myChild")[0].textContent;
+                    if(childData.indexOf(getmktime(selectedElement)) === -1)
+                        father.getElementsByClassName("myChild")[0].innerHTML = getmktime(selectedElement);
+                    if(childData.indexOf(getmktime(selectedElement)) === -1 && childData.length > 0)
+                        father.getElementsByClassName("myChild")[0].innerHTML = childData + "," + getmktime(selectedElement);
 
 
-
-                    var fathersName = getmktime(svgArr[i]);
-                    //console.log("Father's element name: " + fathersName);
-                    childrenInfo = getAllChildren(selectedElement);
-
-
-                    //TURI VEIKTI KAI TA KA JUNGIU TURI VAIKU
-                    if(childrenInfo.length > 0 && childrenInfo[0] !== ""){
-                        //childrenInfo = selectedElement.getElementsByClassName("myChild")[0].textContent;
-                        console.log("PRIJUNGTI VAIKU PRIE NAUJO TEVO su vardais: " + childrenInfo);
-                        console.log("TEVOS VARDAS: " + fathersName);
-                        var fatherChildInfo = getAllChildren(svgArr[i]);
-                        for(j = 0; j < childrenInfo.length; j++) {
-                            //TODO HERE ne children info -> turi tikrinti tai kas pas teva yra tevo child info //
-
-                            console.log("bef");
-                            console.log(getAllChildren(svgArr[i]));
-                            if (getAllChildren(svgArr[i]).indexOf(childrenInfo[j]) === -1 && childrenInfo.length > 0)
-                                getPathFrommktime(fathersName).parentNode.getElementsByClassName("myChild")[0].innerHTML =
-                                    getAllChildren(svgArr[i]) + "," + childrenInfo[j];
-                            console.log("aft");
-                            console.log(getAllChildren(svgArr[i]));
+                    childData = getChildrenData(selectedElement);
+                    
+                    //Checking is SELECTED element have any children
+                    if(childData.length > 0 && childData[0] !== ""){
+                        for(j = 0; j < childData.length; j++) {
+                            if (getChildrenData(father).indexOf(childData[j]) === -1 && childData.length > 0)
+                                getGelementByName(fathersName).getElementsByClassName("myChild")[0].innerHTML =
+                                    getChildrenData(father) + "," + childData[j];
                         }
 
                         //paimti visus vaikus prijungiamo objekto
-                        console.log(getAllChildren(selectedElement));
-                        childrenInfo = getAllChildren(selectedElement);
-                        for(j = 0; j < childrenInfo.length; j++){
-                            console.log(getPathFrommktime(childrenInfo[j]).parentNode);
-                            var childM = getPathFrommktime(childrenInfo[j]).parentNode.getAttributeNS(null, "transform").slice(7, -1).split(' ');
+                        childData = getChildrenData(selectedElement);
+                        for(j = 0; j < childData.length; j++){
+                            var childM = getGelementByName(childData[j]).getAttributeNS(null, "transform").slice(7, -1).split(' ');
                             for(k = 0; k < childM.length; k++) {
                                 childM[k] = parseFloat(childM[k]);
                             }
-                            childM[4] += tmpTotaldx;
-                            childM[5] += tmpTotaldy;
+                            childM[4] += tmpTotalDx;
+                            childM[5] += tmpTotalDy;
 
-                            getPathFrommktime(childrenInfo[j]).parentNode.setAttributeNS(null, "transform", "matrix(" + childM.join(' ') + ")");
+                            getGelementByName(childData[j]).setAttributeNS(null, "transform", "matrix(" + childM.join(' ') + ")");
 
                             //updating intersection array
-                            intersectArrUpdate(getPathFrommktime(childrenInfo[j]).parentNode);
+                            intersectArrUpdate(getGelementByName(childData[j]));
                         }
-
-
-
-
                     }
-                    //ALIGN PAGAL TEVO X IR Y
 
-
-                    //console.log("Father's childs");
-                    //console.log(getAllChildren(svgArr[i]));
-
-
-
-
-
-
-
-                    //If object already is child of some one, append fathers father element
-
-                    //get appended father element -> in while should be going till no child matches found
-
-                    //foras kur iesko svg elemento kur yra child atribute fathers name
+                    //Adding SELECTED element child name to main father of the element group
                     for (var l = 0; l < svgArr.length; l++){
-                        //console.log(getAllChildren(svgArr[l]));
-                        childData = getAllChildren(svgArr[l]);
+                        childData = getChildrenData(svgArr[l]);
                         for(j = 0; j < childData.length; j++){
                             if(childData[j] === fathersName){
-                                //console.log("Father to append: " + getmktime(svgArr[l]));
-                                //console.log(svgArr[l]);
-                                childrenInfo = svgArr[l].getElementsByClassName("myChild")[0].textContent;
-                                if(childrenInfo.indexOf(getmktime(selectedElement)) === -1 && childrenInfo.length > 0)
-                                    svgArr[l].getElementsByClassName("myChild")[0].innerHTML = childrenInfo + "," + getmktime(selectedElement);
+                                childData = svgArr[l].getElementsByClassName("myChild")[0].textContent;
+                                if(childData.indexOf(getmktime(selectedElement)) === -1 && childData.length > 0) {
+                                    svgArr[l].getElementsByClassName("myChild")[0].innerHTML = childData + "," + getmktime(selectedElement);
+
+                                    childData = svgArr[l].getElementsByClassName("myChild")[0].textContent;
+                                    var selectedElemChildData = getChildrenData(selectedElement);
+                                    if(selectedElemChildData.length > 0 && selectedElemChildData[0] !== "") {
+                                        for (k = 0; k < selectedElemChildData.length; k++) {
+                                            console.log(selectedElemChildData[k]);
+                                            svgArr[l].getElementsByClassName("myChild")[0].innerHTML = childData + "," + selectedElemChildData[k];
+                                        }
+                                    }
+                                }
                                 break;
                             }
                         }
                     }
-
-                    //kazkaip patikrinti kad ne overvritintu esamo tevo
-                    //Jeigu noriu prijungti TEVA su vaikais
-
-
-                    //Papildomai allign visu bloku pagal tevo x ir y
-
                 }
+
                 //If element can not be joined
                 if((svgArr[i].firstElementChild.getAttribute("stroke") === "green") &&
                     svgArr[i].firstElementChild.getAttribute("stroke-dasharray") !== "0") {
@@ -671,7 +639,7 @@
 
                     for(i = 0; i < childMatrix.length; i++) {
                         var tmpMatrix = childMatrix[i].childM;
-                        var child = getPathFrommktime(childMatrix[i].childmktime).parentNode;
+                        var child = getGelementByName(childMatrix[i].childmktime);
 
                         for (var k = 0; k < tmpMatrix.length; k++) {
                             tmpMatrix[k] = parseFloat(tmpMatrix[k]);
@@ -685,23 +653,26 @@
                     }
                 }
             }
-            //console.log("x: " + tmpMatrixX + " y: " + tmpMatrixY);
-
-
-
-            selectedElement = 0;
-            childMatrix = [];
-            tmpTotaldx = 0;
-            tmpTotaldy = 0;
         }
+        selectedElement = 0;
+        tmpTotalDx = 0;
+        tmpTotalDy = 0;
     }
-    //Get selected element all children
-    function getAllChildren(element) { //TODO split by comma, also when adding child appending by comma
+    /**
+     * Get selected element all children names.
+     * @param element Svg <g> component(element)
+     * @returns {Array} String array of given element children names (mktime)
+     */
+    function getChildrenData(element) {
         var children = element.getElementsByClassName("myChild");
+        //[0] index, cause getElementsByClassName return an array of found "myChild" classes
         return children[0].textContent.split(",");
     }
-
-    //get svg element x
+    /**
+     * Simple function to get svg <g> element real x coordinates
+     * @param element - svg <g>
+     * @returns {number} X coordinate
+     */
     function getSvgElementX(element){
         if(element.tagName === "g") {
             var matrix = element.getAttributeNS(null, "transform").slice(7, -1).split(' ');
@@ -711,7 +682,11 @@
             return Math.round(element.getBBox().x + matrix[4]);
         }
     }
-    //get svg element y
+    /**
+     * Simple function to get svg <g> element real y coordinates
+     * @param element - svg <g>
+     * @returns {number} Y coordinate
+     */
     function getSvgElementY(element){
         if(element.tagName === "g") {
             var matrix = element.getAttributeNS(null, "transform").slice(7, -1).split(' ');
@@ -721,15 +696,15 @@
             return Math.round(element.getBBox().y + matrix[5]);
         }
     }
-    //get all svg elements in scene
-    function getGetAllSvgElementsInScene() {
-        var svgArr = $("#code-logic-scene").children();
-
+    /**
+     * Creating array of data of all <g> svg elements in scene
+     * initializing - svgScene[]
+     */
+    function getDataArrayOfSvgInScene() {
+        var svgArr = document.getElementById("code-logic-scene").children;
+        svgScene = [];
+        //Creating array of just svg elements data
         for(var i = 0; i < svgArr.length; i++){
-            //console.log(svgArr[i]);
-            //console.log("X: " + getSvgElementX(svgArr[i]) + "  Y: " + getSvgElementY(svgArr[i]));
-            //console.log("Code ID: " + getSvgCodeId(svgArr[i]));
-            //console.log("Value: " + getDataFromSvgForm(svgArr[i]));
             svgScene.push({
                 mktime: getmktime(svgArr[i]),
                 codeID: getSvgCodeId(svgArr[i]),
@@ -738,11 +713,11 @@
                 y: getSvgElementY(svgArr[i])
             })
         }
-
-
-        console.log(svgScene);
     }
-    //get input data from svg element
+    /**
+     * Getting data from <input> or <select> tag from svg element
+     *  @param element - svg <g> element
+     */
     function getDataFromSvgForm(element) {
         var data, e;
         if(element.getElementsByClassName("code-selection").length > 0) {
@@ -755,22 +730,19 @@
         }
         return data;
     }
-    //get svg element code-id
+    /**
+     * Get data from svg <text> tag with class code id
+     *  @param element - svg <g> element
+     */
     function getSvgCodeId(element) {
         return element.getElementsByClassName("code-id")[0].textContent;
     }
-
-    //TODO write script which adds element to intersecion array
-    //Initializing intersection array -> array of elements dimensions
+    /**
+     * Intersected array initialization, load all exiting svg elements data into array
+     */
     function intersectArrInit(){
-        var svgArr = $("#code-logic-scene").children();
+        var svgArr = document.getElementById("code-logic-scene").children;
         for(var i = 0; i < svgArr.length; i++){
-            //console.log(svgArr[i]);
-            //console.log("from x: " + getSvgElementX(svgArr[i]) + "  from y: " + getSvgElementY(svgArr[i]));
-            //console.log("to x: " + Math.round(svgArr[i].getBBox().width + getSvgElementX(svgArr[i])) +
-              //  "  to y: " + Math.round(svgArr[i].getBBox().height + getSvgElementY(svgArr[i])));
-
-            //console.log(svgArr[i]);
             svgIntersectArr.push({
                 mktime: getmktime(svgArr[i]),
                 xf: getSvgElementX(svgArr[i]),
@@ -780,11 +752,26 @@
                 joinable: svgArr[i].classList.contains('joinable')
             });
         }
-        //console.log(svgIntersectArr);
     }
-    //On selected element move update intersection array
+    /**
+     * Adding new svg element to intersection array
+     *  @param element - svg <g> element
+     */
+    function addElementToIntersecArr(element) {
+        svgIntersectArr.push({
+            mktime: getmktime(element),
+            xf: getSvgElementX(element),
+            xt: Math.round(element.getBBox().width + getSvgElementX(element)),
+            yf: getSvgElementY(element),
+            yt: Math.round(element.getBBox().height + getSvgElementY(element)),
+            joinable: element.classList.contains('joinable')
+        })
+    }
+    /**
+     * Updating intersection array with selected svg element
+     *  @param element - svg <g> element
+     */
     function intersectArrUpdate(element) {
-        //console.log(getmktime(element));
         for(var i = 0; i < svgIntersectArr.length; i++){
             if(svgIntersectArr[i].mktime === getmktime(element)){
                 svgIntersectArr[i].xf = getElementXf(element);
@@ -795,27 +782,27 @@
             }
         }
     }
-    //Finding intersection
+    /**
+     * Finding intersection
+     *  @param element - svg <g> element
+     */
     function findIntersection(element) {
-        //console.log("xf: " + getElementXf(element) + " xt: " + getElementXt(element));
-        //console.log("yf: " + getElementYf(element) + " yt: " + getElementYt(element));
-
+        //taking top border center point coordinations
         var elementX = Math.round(getElementXf(element) + ((getElementXt(element) - getElementXf(element)) / 2));
         var elementY = getElementYf(element);
-        var selectedElementIndex;
-        //console.log(elementX + " " + elementY)
-        //clear unintersected borders
+
+        //clear un-intersected svg elements
         for(var i = 0; i < svgIntersectArr.length; i++) {
-            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "black");
-            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "2");
-            getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "0");
+            getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke", "black");
+            getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-width", "2");
+            getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "0");
         }
+        //Checking or taken center dot is in any svg <g> elements
         for(i = 0; i < svgIntersectArr.length; i++){
             if(svgIntersectArr[i].mktime !== getmktime(element)){
                 for(var x = svgIntersectArr[i].xf; x < svgIntersectArr[i].xt; ++x){
                     for(var y = svgIntersectArr[i].yf; y < svgIntersectArr[i].yt; ++y){
                         if(x === elementX && y === elementY){
-                            //console.log("Intersects with: " + svgIntersectArr[i].mktime + " element.");
                             previewIntersection(i);
                             return;
                         }
@@ -823,80 +810,102 @@
                 }
             }
         }
-
     }
-    //Draw border on intersected element
-    //visiems anuliuojam piesima o veliau piesiam tik tiem kas dbr intersectinasi
+    /**
+     * Drawing border for intersected element
+     *  @param elementIndex - is int, index that represent element in intersection array
+     * intersection array is save all svg elements array, but just only with name and coordinates data
+     */
     function previewIntersection(elementIndex) {
         for(var i = 0; i < svgIntersectArr.length; i++){
             if(i === elementIndex){
-                //console.log(svgIntersectArr[i].mktime);
-                //console.log(getPathFrommktime(svgIntersectArr[i].mktime));
-                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "green");
-                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "4");
-                //jeigu mano arba kitas jungiamas elementas yra unjoined
+                //Drawing standart green border to preview intersection
+                getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke", "green");
+                getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-width", "4");
+
+                //If element which is now intersected can not be joined draw dashed border
                 var hasClass = selectedElement.classList.contains('joinable');
                 if(!(hasClass === svgIntersectArr[i].joinable))
-                    getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "5,5,5");
+                    getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "5,5,5");
             }
             else {
-                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke", "black");
-                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-width", "2");
-                getPathFrommktime(svgIntersectArr[i].mktime).setAttribute("stroke-dasharray", "0");
+                //Other elements in array that are not intersected is displayed with standard black border
+                getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke", "black");
+                getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-width", "2");
+                getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "0");
             }
         }
     }
-    //Timestamp svg element on creation //TODO kai kuriamas elementas metamas time stamp VELIAU
+    /**
+     * Timestamps svg elements in scene
+     */
     function timeStampAll() {
-        var svgArr = $("#code-logic-scene").children();
+        var svgArr = document.getElementById("code-logic-scene").children;
         for(var i = 0; i < svgArr.length; i++){
             //svgArr[i].getElementsByClassName("mktime")[0].innerHTML = mktime() + i; //patestuoti galima su [+ i]
-            svgArr[i].getElementsByClassName("mktime")[0].innerHTML = i;
+            //svgArr[i].getElementsByClassName("mktime")[0].innerHTML = i;
         }
     }
-    //Create timestamp
+    /**
+     * Simply generates unique id -> timestamp
+     */
     function mktime(){
         var d = new Date();
         return d.getTime();
     }
-    //Get svg path element from mktime value
-    function getPathFrommktime(value) {
-        var svg = $("#code-logic-scene");
-        var tmpVal;
-        var elements = svg[0].getElementsByClassName("mktime");
+    /**
+     * Get svg <g> element from name(mktime)
+     * @param value - mktime
+     * @returns {Element} <g> svg element
+     */
+    function getGelementByName(value) {
+        var svg = document.getElementById("code-logic-scene");
+        var elements = svg.getElementsByClassName("mktime");
         for(var i = 0; i < elements.length; i++) {
             if (elements[i].textContent === value) {
-                tmpVal = elements[i].parentNode;
-                return tmpVal.firstElementChild;
+                return elements[i].parentNode;
             }
         }
-
     }
-    //Get mktime value from svg <g> element
+    /**
+     * Get svg <g> element id === name === mktime
+     * @param element - svg <g> element
+     * @returns {string} value of svg <g> element
+     */
     function getmktime(element) {
         return element.getElementsByClassName("mktime")[0].textContent;
     }
-    //Get element xf
+    /**
+     * Get (x from) coordinates of svg <g> element  -> smallest possible x coordinate
+     * @param element
+     * @returns {number} x coordinates
+     */
     function getElementXf(element) {
         return getSvgElementX(element);
     }
-    //Get element xt
+    /**
+     * Get (x to) coordinates of svg <g> element -> largest possible x coordinate
+     * @param element
+     * @returns {number} x coordinates
+     */
     function getElementXt(element) {
         return Math.round(element.getBBox().width + getSvgElementX(element))
     }
-    //Get element yf
+    /**
+     * Get (y from) coordinates of svg <g> element -> smallest possible y coordinate
+     * @param element
+     * @returns {number} y coordinates
+     */
     function getElementYf(element) {
         return getSvgElementY(element);
     }
-    //Get element yt
+    /**
+     * Get (y to) coordinates of svg <g> element -> largest possible y coordinate
+     * @param element
+     * @returns {number} y coordinates
+     */
     function getElementYt(element){
         return Math.round(element.getBBox().height + getSvgElementY(element));
     }
-
-    //Create json array of all svg elements in scene
-
    </script>
-
-
-
 </html>
