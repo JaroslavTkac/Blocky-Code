@@ -395,6 +395,7 @@
 
         timeStampAll();
         intersectArrInit();
+        previewGroupSelection();
     });
 
     var selectedElement;
@@ -556,7 +557,7 @@
                         }
                         if(getElementXf(father) >= getElementXf(selectedElement)) {
                             currentMatrix[4] += 1;
-                            tmpTotalDy += 1;
+                            tmpTotalDx += 1;
                         }
                         selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(' ') + ")");
 
@@ -657,6 +658,42 @@
         selectedElement = 0;
         tmpTotalDx = 0;
         tmpTotalDy = 0;
+    }
+    /**
+     * On group hover draw border for every element in group
+     */
+    function previewGroupSelection() { //TODO remove rect from if
+        $(".draggable").hover(
+            function() {
+                var hoverElement = $(this).children()[0];
+                if(hoverElement !== undefined && (hoverElement.tagName === "path" || hoverElement.tagName === "rect")) {
+                    hoverElement.setAttribute("stroke", "blue");
+                    hoverElement.setAttribute("stroke-width", "3.5");
+
+                    var childData = getChildrenData(hoverElement.parentNode);
+                    if(childData.length > 0 && childData[0] !== "") {
+                        for (var i = 0; i < childData.length; i++) {
+                            getGelementByName(childData[i]).firstElementChild.setAttribute("stroke", "blue");
+                            getGelementByName(childData[i]).firstElementChild.setAttribute("stroke-width", "3.5");
+                        }
+                    }
+                }
+            },
+            function () {
+                var hoverElement = $(this).children()[0];
+                if(hoverElement !== undefined && (hoverElement.tagName === "path" || hoverElement.tagName === "rect")) {
+                    hoverElement.setAttribute("stroke", "black");
+                    hoverElement.setAttribute("stroke-width", "2");
+
+                    var childData = getChildrenData(hoverElement.parentNode);
+                    if(childData.length > 0 && childData[0] !== "") {
+                        for (var i = 0; i < childData.length; i++) {
+                            getGelementByName(childData[i]).firstElementChild.setAttribute("stroke", "black");
+                            getGelementByName(childData[i]).firstElementChild.setAttribute("stroke-width", "2");
+                        }
+                    }
+                }
+            });
     }
     /**
      * Get selected element all children names.
