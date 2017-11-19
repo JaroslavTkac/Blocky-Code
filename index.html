@@ -306,7 +306,8 @@
                             </g>
 
 
-                            <g class="draggable joinable"
+                            <!-- Orange is Trigger -->
+                            <g class="draggable joinable trigger"
                                transform="matrix(1 0 0 1 0 0)"
                                onmousedown="selectElement(evt)">
                                 <path d="M 100 200 L 300 200 C 325.954 191.355 311.556 145.657 300 149.448
@@ -323,8 +324,8 @@
                                       x="150" y="170"></text>
                             </g>
 
-
-                            <g class="draggable joinable"
+                            <!-- Red is Trigger -->
+                            <g class="draggable joinable trigger"
                                transform="matrix(1 0 0 1 0 0)"
                                onmousedown="selectElement(evt)">
                                 <path d="M 100 300 L 200.264 299.649 C 220.44 297.803 217.229 251.07 200 253.136
@@ -476,7 +477,7 @@
         previewGroupSelection();
 
         $('#push-code').click(function () {
-            getDataArrayOfSvgInScene();
+            getDataOfSvgInScene();
         });
     });
 
@@ -485,7 +486,7 @@
     var currentY = 0;
     var currentMatrix = 0;
     var childMatrix = [];
-    var svgScene = [], svgIntersectArr = [];
+    var svgIntersectArr = [], codeArray = [];
     var tmpTotalDx, tmpTotalDy;
     var tmpMatrixX, tmpMatrixY;
 
@@ -865,46 +866,104 @@
      * Creating array of SORTED data by (x;y) of all <g> svg elements in scene
      * initializing - svgScene[]
      */
-    function getDataArrayOfSvgInScene() {
+    function getDataOfSvgInScene() {
         var svgArr = document.getElementById("code-logic-scene").children;
-        svgScene = [];
+        var svgScene = [];
+        var childData;
+        codeArray = [];
         //Creating array of just svg elements data
         for(var i = 0; i < svgArr.length; i++){
-            if(getmktime(svgArr[i]) !== "trashbin")
-                svgScene.push({
-                    mktime: getmktime(svgArr[i]),
-                    codeID: getSvgCodeId(svgArr[i]),
-                    value: getDataFromSvgForm(svgArr[i]),
-                    children: getChildrenData(svgArr[i]),
-                    x: getElementXf(svgArr[i]),
-                    y: getElementYf(svgArr[i])
-                })
+            if(getmktime(svgArr[i]) !== "trashbin") {
+                //Pushing into array only father elements and elements with father
+                childData = getChildrenData(svgArr[i]);
+                //Check NR.:1
+                if (childData.length > 0 && childData[0] !== "" && childData !== undefined)
+                    svgScene.push({
+                        mktime: getmktime(svgArr[i]),
+                        codeID: getSvgCodeId(svgArr[i]),
+                        value: getDataFromSvgForm(svgArr[i]),
+                        children: getChildrenData(svgArr[i]),
+                        x: getElementXf(svgArr[i]),
+                        y: getElementYf(svgArr[i]),
+                        trigger: svgArr[i].classList.contains('trigger')
+                    });
+                //Check NR.:2
+                else {
+                    var tmp = checkIsElementHaveFather(svgArr[i]);
+                    if (tmp !== 0)
+                        svgScene.push({
+                            mktime: getmktime(svgArr[i]),
+                            codeID: getSvgCodeId(svgArr[i]),
+                            value: getDataFromSvgForm(svgArr[i]),
+                            children: getChildrenData(svgArr[i]),
+                            x: getElementXf(svgArr[i]),
+                            y: getElementYf(svgArr[i]),
+                            trigger: svgArr[i].classList.contains('trigger')
+                        });
+                }
+            }
         }
-
         //sorting array by x and y coordinates example (100; 40) > (120; 10)
         svgScene.sort(
             function(a, b) {
                 return (parseFloat(a.y) - parseFloat(b.y)) && (parseFloat(a.x) - parseFloat(b.x));
             }
         );
+        //console.log("SVG scene sorted");
+        //console.log(svgScene);
+        var cleanSvgScene = [];
+        for (i = 0; i < svgScene.length; i++){
+            if(svgScene[i].trigger){
+                cleanSvgScene.push(svgScene[i]);
+                for(var k = i+1; k < svgScene.length; k++){
+                    if(svgScene[k].children.length > 0 && svgScene[k].children[0] !== "")
+                        cleanSvgScene.push(svgScene[k]);
+                    else{
+                        cleanSvgScene.push(svgScene[k]);
+                        i = k;
+                        break;
+                    }
+                }
+            }
+        }
+        //console.log("SVG scene cleaned");
+        //console.log(cleanSvgScene);
+        var groupArr = [];
+        for (i = 0; i < cleanSvgScene.length; i++){
+            if(cleanSvgScene[i].children.length > 0 && cleanSvgScene[i].children[0] !== ""){
+                groupArr.push(cleanSvgScene[i]);
+            }
+            else{
+                groupArr.push(cleanSvgScene[i]);
+                codeArray.push(groupArr);
+                groupArr = [];
+            }
+        }
 
-        //console.log(cxray.sort((a, b) => a[1] - b[1] || a[0] - b[0]));
-
-        console.log("SVG scene sorted");
-        console.log(svgScene);
-
-
-
-        //kaip pasakyti kad koda skaityti kaip grupe
-
-
-
-
-
-
-
-
+        console.log("Final code array");
+        console.log(codeArray);
     }
+    /**
+     * Check is element is someone child
+     * @param element - svg <g>
+     */
+    function checkIsElementHaveFather(element){
+        var svgArr = document.getElementById("code-logic-scene").children;
+        var childData;
+        for(var i = 0; i < svgArr.length; i++){
+            if(getmktime(svgArr[i]) !== "trashbin") {
+                childData = getChildrenData(svgArr[i]);
+                if (childData.length > 0 && childData[0] !== "" && childData !== undefined) {
+                    for (var j = 0; j < childData.length; j++) {
+                        if (getmktime(element) === childData[j])
+                            return element;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
     /**
      * Deleting element from svg scene
      * @param element - svg <g>
@@ -964,7 +1023,8 @@
                 yt: Math.round(svgArr[i].getBBox().height + getSvgElementY(svgArr[i])),
                 joinable: svgArr[i].classList.contains('joinable'),
                 nonjoinable: svgArr[i].classList.contains('nonjoinable'),
-                trashbin: svgArr[i].classList.contains('trash-bin')
+                trashbin: svgArr[i].classList.contains('trash-bin'),
+                trigger: svgArr[i].classList.contains('trigger')
             });
         }
         console.log(svgIntersectArr);
@@ -1029,20 +1089,29 @@
 
                 //If element which is now intersected can not be joined draw dashed border
                 var hasClass = selectedElement.classList.contains('joinable');
-                if(!(hasClass === svgIntersectArr[i].joinable))
+                if(!(hasClass && svgIntersectArr[i].joinable))
                     getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "5,5,5");
 
                 hasClass = selectedElement.classList.contains('nonjoinable');
                 if(!(hasClass === svgIntersectArr[i].nonjoinable))
                     getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "5,5,5");
 
-
+                //If intersected element is rubbish bin show that
                 if(svgIntersectArr[i].trashbin) {
                     getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "0");
                     getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke", "red");
                     getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("transform", "scale(1.3)");
                 }
 
+                //If father and intersected element is trigger
+                hasClass = selectedElement.classList.contains('trigger');
+                if(hasClass && svgIntersectArr[i].trigger)
+                    getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "5,5,5");
+
+                //If selected element = trigger & intersected = standard
+                hasClass = selectedElement.classList.contains('trigger');
+                if(hasClass && svgIntersectArr[i].joinable && !svgIntersectArr[i].trigger)
+                    getGelementByName(svgIntersectArr[i].mktime).firstElementChild.setAttribute("stroke-dasharray", "5,5,5");
             }
             else {
                 //Other elements in array that are not intersected is displayed with standard black border
