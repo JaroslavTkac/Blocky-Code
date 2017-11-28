@@ -261,12 +261,7 @@ svg text::selection {
     background: none;
 }
 svg g path:hover {
-     stroke: blue;
-     stroke-width : 3.5;
-}
-svg g rect:hover {
-    stroke: blue;
-    stroke-width : 3.5;
+    cursor: grab;
 }
 .code-id,
 .myFather,
@@ -275,9 +270,31 @@ svg g rect:hover {
     visibility: hidden;
     display: none;
 }
-
-
-
+#code-logic-selector{
+    padding: 0 0 0 0;
+}
+#code-logic-scene{
+    padding: 0 0 0 0;
+}
+.basic-text-over-svg{
+    fill: white;
+}
+#code-blocks-div{
+    border: 1px solid black;
+    padding: 0 0 0 0;
+    overflow: scroll;
+    max-height: 650px
+}
+#code-scene-div{
+    border: 1px solid red;
+    padding: 0 0 0 0;
+    overflow: scroll;
+    max-height: 650px
+}
+input[type=text]{
+    border-radius: 12%;
+    width: 50px;
+}
 
 
 
