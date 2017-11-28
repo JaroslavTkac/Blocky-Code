@@ -464,12 +464,12 @@
                                    class="">
                                     <path d="M 7.625 34.731 L 136.49 34.155 C 155.176 33.562 152.324
                                     -0.496 136.49 0.006 L 0 0.418 L 7.625 34.731 Z" fill="#d068f9" stroke="black" stroke-width="2"></path>
-                                    <text class="basic-text-over-svg" x="20" y="24" font-size="20" value="0">
+                                    <text class="basic-text-over-svg" x="20" y="24" font-size="20">
                                         Set X
                                     </text>
                                     <foreignObject x="80" y="4" width="60" height="30">
                                         <form>
-                                            <input class="code-input" title="coordinate" type="text"/>
+                                            <input class="code-input" title="coordinate" type="text" value="0"/>
                                         </form>
                                     </foreignObject>
                                     <text class="code-id"
@@ -1256,9 +1256,24 @@
             console.log("X: " + x + " Y: " + y);
             var modSvgToAdd = svgToAdd.replace(tmp.substr(3, tmp.length), "transform=\"matrix(1 0 0 1 " + x + " " + y + ")\"");
 
+            //Save already filled data to array and fill back it after appending html
+            var svgArr = document.getElementById("code-logic-scene").children;
+            var dataArr = [];
+
+            //Saving already created data
+            for(i = 0; i < svgArr.length; i++){
+                if(getmktime(svgArr[i]) !== "trashbin")
+                    dataArr.push({
+                        "name" : getmktime(svgArr[i]),
+                        "value" : getDataFromSvgForm(svgArr[i])
+                    })
+            }
+            console.log(dataArr);
+
+
             //Add to main scene
             $("#code-logic-scene").append(modSvgToAdd).html($("#code-logic-scene").html());
-            var svgArr = document.getElementById("code-logic-scene").children;
+            svgArr = document.getElementById("code-logic-scene").children;
             var element = svgArr[svgArr.length-1];
             var baseClass = element.className.baseVal;
 
@@ -1267,8 +1282,44 @@
             element.getElementsByClassName("mktime")[0].innerHTML = mktime();
 
             intersectArrInit();
+            //Restoring data
+            svgArr = document.getElementById("code-logic-scene").children;
+            for(i = 0; i < svgArr.length; i++){
+                if(getmktime(svgArr[i]) !== "trashbin")
+                    for(var j = 0; j < dataArr.length; j++){
+                        if(getmktime(svgArr[i]) === dataArr[j].name){
+                            if(svgArr[i].getElementsByClassName("code-selection").length > 0) {
+                                //e = svgArr[i].getElementsByClassName("code-selection")[0];
+                                //data = e.options[e.selectedIndex].value;
+                                console.log("selection");
+                                console.log(svgArr[i].getElementsByClassName("code-selection"));
+                                //svgArr[i].getElementsByClassName("code-selection")[0].value = dataArr[j].value;
+                                setSelectedValue(svgArr[i].getElementsByClassName("code-selection")[0], dataArr[j].value);
+
+                            }
+                            if(svgArr[i].getElementsByClassName("code-input").length > 0) {
+                                console.log("input");
+                                console.log(svgArr[i].getElementsByClassName("code-input")[0]);
+                                console.log(svgArr[i].getElementsByClassName("code-input")[0].value);
+                                svgArr[i].getElementsByClassName("code-input")[0].value = dataArr[j].value;
+                            }
+                        }
+                    }
+            }
+
         });
 
+    }
+    /**
+     * Setting selectable value
+     */
+    function setSelectedValue(selectObj, valueToSet) {
+        for (var i = 0; i < selectObj.options.length; i++) {
+            if (selectObj.options[i].text === valueToSet.toUpperCase()) {
+                selectObj.options[i].selected = true;
+                return;
+            }
+        }
     }
     /**
      * On group hover draw border for every element in group
